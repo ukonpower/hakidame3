@@ -1,5 +1,6 @@
 import * as GLP from 'glpower';
 import { Component, ComponentUpdateEvent } from '..';
+import { Entity } from '../../Entity';
 
 export class RotateViewer extends Component {
 
@@ -15,13 +16,28 @@ export class RotateViewer extends Component {
 		super();
 
 		this.target = new GLP.Vector( 0, 0, 0, 0 );
-		this.rotBasePos = new GLP.Vector( 0.0, 5.0, 20.0 );
+		this.rotBasePos = new GLP.Vector( 0, 0, 0 );
 		this.rotSpeed = 1.0;
 
 		this.quaternion = new GLP.Quaternion();
 		this.matrix = new GLP.Matrix();
 
 	}
+
+	protected setEntityImpl( entity: Entity | null, prevEntity: Entity | null ): void {
+
+		if ( entity ) {
+
+			entity.on( "notice/sceneCreated", () => {
+
+				this.rotBasePos.copy( entity.position );
+
+			} );
+
+		}
+
+	}
+
 
 	protected updateImpl( event: ComponentUpdateEvent ): void {
 

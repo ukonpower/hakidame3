@@ -52,64 +52,64 @@ void main( void ) {
 
 	#include <frag_in>
 
-	vec3 rayOrigin = ( modelMatrixInverse * vec4( vPos, 1.0 ) ).xyz;
-	vec3 rayDir = normalize( ( modelMatrixInverse * vec4( normalize( vPos - cameraPosition ), 0.0 ) ).xyz );
-	vec2 rayDirXZ = normalize( rayDir.xz );
-	vec3 rayPos = rayOrigin;
-	float rayLength = 0.0;
+	// vec3 rayOrigin = ( modelMatrixInverse * vec4( vPos, 1.0 ) ).xyz;
+	// vec3 rayDir = normalize( ( modelMatrixInverse * vec4( normalize( vPos - cameraPosition ), 0.0 ) ).xyz );
+	// vec2 rayDirXZ = normalize( rayDir.xz );
+	// vec3 rayPos = rayOrigin;
+	// float rayLength = 0.0;
 	
-	vec3 gridCenter = vec3( 0.0 );
-	float lenNextGrid = 0.0;
+	// vec3 gridCenter = vec3( 0.0 );
+	// float lenNextGrid = 0.0;
 	
-	vec2 dist = vec2( 0.0 );
-	bool hit = false;
+	// vec2 dist = vec2( 0.0 );
+	// bool hit = false;
 
-	vec3 normal;
+	// vec3 normal;
 	
-	for( int i = 0; i < 64; i++ ) { 
+	// for( int i = 0; i < 64; i++ ) { 
 
-		if( lenNextGrid <= rayLength ) {
+	// 	if( lenNextGrid <= rayLength ) {
 
-			rayLength = lenNextGrid;
-			rayPos = rayOrigin + rayLength * rayDir;
-			vec3 grid = traverseGrid2D( rayPos.xz, rayDirXZ );
-			gridCenter.xz = grid.xy;
+	// 		rayLength = lenNextGrid;
+	// 		rayPos = rayOrigin + rayLength * rayDir;
+	// 		vec3 grid = traverseGrid2D( rayPos.xz, rayDirXZ );
+	// 		gridCenter.xz = grid.xy;
 
-			float lg = length(gridCenter.xz);
-			gridCenter.y = ( sin( lg + uTime ) * 0.5 - 0.5 ) * smoothstep( 15.0, 0.0, lg );
-			lenNextGrid += grid.z;
+	// 		float lg = length(gridCenter.xz);
+	// 		gridCenter.y = ( sin( lg + uTime ) * 0.5 - 0.5 ) * smoothstep( 15.0, 0.0, lg );
+	// 		lenNextGrid += grid.z;
 
-		}
+	// 	}
 
-		dist = D( rayPos - gridCenter );
-		rayLength += dist.x;
-		rayPos = rayOrigin + rayLength * rayDir;
+	// 	dist = D( rayPos - gridCenter );
+	// 	rayLength += dist.x;
+	// 	rayPos = rayOrigin + rayLength * rayDir;
 
-		if( dist.x < 0.01 ) {
-			hit = true;
-			break;
-		}
+	// 	if( dist.x < 0.01 ) {
+	// 		hit = true;
+	// 		break;
+	// 	}
 		
-	}
+	// }
 
-	if( hit ) {
+	// if( hit ) {
 
-		vec3 n = N( rayPos - gridCenter, 0.00001 );
-		// vec3 n2 = N( rayPos - gridCenter, 0.05 );
-		// outEmission += length(n - n2);
-		outNormal = normalize(modelMatrix * vec4( n, 0.0 )).xyz;
+	// 	vec3 n = N( rayPos - gridCenter, 0.00001 );
+	// 	// vec3 n2 = N( rayPos - gridCenter, 0.05 );
+	// 	// outEmission += length(n - n2);
+	// 	outNormal = normalize(modelMatrix * vec4( n, 0.0 )).xyz;
 		
-	} else {
+	// } else {
 
-		discard;
+	// 	discard;
 		
-	}
+	// }
 
-	outRoughness = .1;
-	outMetalic = 0.0;
-	// outColor.xyz = vec3( 0.0 );
+	// outRoughness = .1;
+	// outMetalic = 0.0;
+	// // outColor.xyz = vec3( 0.0 );
 
-	outPos = ( modelMatrix * vec4( rayPos, 1.0 ) ).xyz;
+	// outPos = ( modelMatrix * vec4( rayPos, 1.0 ) ).xyz;
 
 	#include <frag_out>
 

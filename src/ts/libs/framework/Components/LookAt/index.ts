@@ -37,7 +37,7 @@ export class LookAt extends Component {
 
 		if ( entity ) {
 
-			entity.on( 'notice/sceneUpdated', onUpdate );
+			entity.on( 'notice/sceneTick', onUpdate );
 
 		}
 
@@ -45,7 +45,7 @@ export class LookAt extends Component {
 
 			if ( entity ) {
 
-				entity.off( 'notice/sceneUpdated', onUpdate );
+				entity.off( 'notice/sceneTick', onUpdate );
 
 			}
 

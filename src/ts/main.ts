@@ -48,7 +48,6 @@ class App {
 
 	}
 
-
 	private animate() {
 
 		this.scene.update();

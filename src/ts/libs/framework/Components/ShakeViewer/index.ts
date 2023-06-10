@@ -8,6 +8,8 @@ export class ShakeViewer extends Component {
 	private shakeMatrix: GLP.Matrix;
 	private shakeQua: GLP.Quaternion;
 
+	private cameraComponent?: Camera;
+
 	constructor() {
 
 		super();
@@ -25,7 +27,12 @@ export class ShakeViewer extends Component {
 
 		if ( entity ) {
 
-			entity.on( 'notice/sceneUpdated', onUpdate );
+			entity.on( 'notice/sceneTick', onUpdate );
+			this.cameraComponent = entity.getComponent( 'camera' );
+
+		} else {
+
+			this.cameraComponent = undefined;
 
 		}
 
@@ -33,19 +40,27 @@ export class ShakeViewer extends Component {
 
 			if ( entity ) {
 
-				entity.off( 'notice/sceneUpdated', onUpdate );
+				entity.off( 'notice/sceneTick', onUpdate );
 
 			}
 
 		} );
 
+
 	}
 
 	private calcMatrix( event: EntityUpdateEvent ) {
 
+
 		if ( this.entity ) {
 
-			const shake = 0.005;
+			let shake = 0.005;
+
+			if ( this.cameraComponent ) {
+
+				shake *= this.cameraComponent.fov / 50.0;
+
+			}
 
 			this.shakeQua.setFromEuler( { x: Math.sin( event.time * 2.0 ) * shake, y: Math.sin( event.time * 2.5 ) * shake, z: 0 } );
 

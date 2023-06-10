@@ -14,15 +14,15 @@ export const router = ( node: GLP.BLidgeNode ) => {
 
 	} else if ( node.name == "DustParticles" ) {
 
-		return new DustParticles();
+		// return new DustParticles();
 
 	} else if ( node.name == "Ring" ) {
 
-		return new FluidParticles();
+		// return new FluidParticles();
 
 	} else if ( node.name == "Floor" ) {
 
-		return new Floor();
+		// return new Floor();
 
 	}
 

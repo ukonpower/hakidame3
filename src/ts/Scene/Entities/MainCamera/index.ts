@@ -20,6 +20,7 @@ import ssCompositeFrag from './shaders/ssComposite.fs';
 import compositeFrag from './shaders/composite.fs';
 import { LookAt } from '~/ts/libs/framework/Components/LookAt';
 import { ShakeViewer } from '~/ts/libs/framework/Components/ShakeViewer';
+import { RotateViewer } from '~/ts/libs/framework/Components/RotateViewer';
 
 export class MainCamera extends Entity {
 
@@ -104,6 +105,7 @@ export class MainCamera extends Entity {
 		const lookAt = this.addComponent( 'lookAt', new LookAt() );
 
 		this.addComponent( 'shakeViewer', new ShakeViewer() );
+		this.addComponent( 'rotateViewer', new RotateViewer() );
 
 		// resolution
 
@@ -406,32 +408,10 @@ export class MainCamera extends Entity {
 			this.dofTarget = root.getEntityByName( 'CameraTargetDof' ) || null;
 
 			this.baseFov = this.cameraComponent.fov;
-			this.updateProjectionMatrix( this.resolution );
+			this.updateCameraParams( this.resolution );
 
 		} );
 
-		this.on( "notice/sceneUpdated", () => {
-
-			// dof params
-
-			this.matrixWorld.decompose( this.tmpVector1 );
-
-			if ( this.dofTarget ) {
-
-				this.dofTarget.matrixWorld.decompose( this.tmpVector2 );
-
-			}
-
-			const fov = this.cameraComponent.fov;
-			const focusDistance = this.tmpVector1.sub( this.tmpVector2 ).length();
-			const kFilmHeight = 0.036;
-			const flocalLength = 0.5 * kFilmHeight / Math.tan( 0.5 * ( fov / 180 * Math.PI ) );
-			const maxCoc = 1 / this.rtDofBokeh.size.y * 6.0;
-			const rcpMaxCoC = 1.0 / maxCoc;
-			const coeff = flocalLength * flocalLength / ( 0.3 * ( focusDistance - flocalLength ) * kFilmHeight * 2 );
-			this.dofParams.set( focusDistance, maxCoc, rcpMaxCoC, coeff );
-
-		} );
 
 		// tmps
 
@@ -477,6 +457,26 @@ export class MainCamera extends Entity {
 
 	protected updateImpl( event: ComponentUpdateEvent ): void {
 
+		// dof params
+
+		this.matrixWorld.decompose( this.tmpVector1 );
+
+		if ( this.dofTarget ) {
+
+			this.dofTarget.matrixWorld.decompose( this.tmpVector2 );
+
+		}
+
+		const fov = this.cameraComponent.fov;
+		const focusDistance = this.tmpVector1.sub( this.tmpVector2 ).length();
+		const kFilmHeight = 0.036;
+		const flocalLength = 0.5 * kFilmHeight / Math.tan( 0.5 * ( fov / 180 * Math.PI ) );
+		const maxCoc = 1 / this.rtDofBokeh.size.y * 6.0;
+		const rcpMaxCoC = 1.0 / maxCoc;
+		// let coeff = flocalLength * flocalLength / ( 0.3 * ( focusDistance - flocalLength ) * kFilmHeight * 2 ) * 5.0;
+		const coeff = 0.5;
+		this.dofParams.set( focusDistance, maxCoc, rcpMaxCoC, coeff );
+
 		// light shaft swap
 
 		let tmp = this.rtLightShaft1;
@@ -512,7 +512,7 @@ export class MainCamera extends Entity {
 		this.rt2.setSize( e.resolution );
 		this.rt3.setSize( e.resolution );
 
-		this.updateProjectionMatrix( this.resolution );
+		this.updateCameraParams( this.resolution );
 
 		let scale = 2;
 
@@ -537,13 +537,14 @@ export class MainCamera extends Entity {
 		this.rtDofBokeh.setSize( resolutionHalf );
 		this.rtDofComposite.setSize( this.resolution );
 
-
 	}
 
-	private updateProjectionMatrix( resolution: GLP.Vector ) {
+	private updateCameraParams( resolution: GLP.Vector ) {
 
+		this.cameraComponent.near = 100;
+		this.cameraComponent.far = 200;
 		this.cameraComponent.aspect = resolution.x / resolution.y;
-		this.cameraComponent.fov = this.baseFov + Math.max( 0, 1 / this.cameraComponent.aspect - 1 ) * 45.0;
+		this.cameraComponent.fov = this.baseFov + Math.max( 0, 1 / this.cameraComponent.aspect - 1 ) * 10.0;
 		this.cameraComponent.updateProjectionMatrix();
 
 	}
