@@ -11,7 +11,6 @@ import { GPUComputePass } from '~/ts/libs/framework/Components/GPUComputePass';
 import fluidParticlesVert from './shaders/fluidParticles.vs';
 import fluidParticlesFrag from './shaders/fluidParticles.fs';
 import fluidParticlesCompute from './shaders/fluidParticlesCompute.glsl';
-import { CubeGeometry } from '~/ts/libs/framework/Components/Geometry/CubeGeometry';
 import { SphereGeometry } from '~/ts/libs/framework/Components/Geometry/SphereGeometry';
 
 export class FluidParticles extends Entity {

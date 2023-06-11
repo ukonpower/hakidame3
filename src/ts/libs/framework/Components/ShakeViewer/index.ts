@@ -54,7 +54,7 @@ export class ShakeViewer extends Component {
 
 		if ( this.entity ) {
 
-			let shake = 0.005;
+			let shake = 0.008;
 
 			if ( this.cameraComponent ) {
 

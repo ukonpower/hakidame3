@@ -32,12 +32,11 @@ void main( void ) {
 	float len = length(cuv);
 
 	col = texture( sampler0, vUv ).xyz;
-	col = filmic( col );
+	col = filmic( col ) * 1.1;
 
 	#pragma loop_start 4
-		col += texture( uBloomTexture[ LOOP_INDEX ], uv ).xyz * ( 0.5 + float(LOOP_INDEX) * 0.5 ) * 0.2;
+		col += texture( uBloomTexture[ LOOP_INDEX ], uv ).xyz * ( 0.5 + float(LOOP_INDEX) * 0.5 ) * 0.4;
 	#pragma loop_end
-
 
 	col *= smoothstep( 1.0, 0.4, len );
 

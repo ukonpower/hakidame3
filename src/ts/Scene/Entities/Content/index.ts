@@ -14,7 +14,7 @@ export class Content extends Entity {
 
 		const mat = this.addComponent( "material", new Material( {
 			name: "content",
-			type: [ "forward", "shadowMap" ],
+			type: [ "deferred", "shadowMap" ],
 			uniforms: GLP.UniformsUtils.merge( globalUniforms.time, globalUniforms.resolution ),
 			frag: hotGet( 'contentFrag', contentFrag )
 		} ) );

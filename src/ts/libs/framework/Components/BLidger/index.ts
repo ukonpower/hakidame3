@@ -122,7 +122,7 @@ export class BLidger extends Component {
 				entity.addComponent( 'light', new Light( {
 					...lightParam,
 					color: new GLP.Vector().copy( lightParam.color ),
-					useShadowMap: true,
+					useShadowMap: lightParam.shadowMap,
 				} ) );
 
 			}

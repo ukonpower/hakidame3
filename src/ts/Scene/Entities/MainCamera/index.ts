@@ -541,10 +541,10 @@ export class MainCamera extends Entity {
 
 	private updateCameraParams( resolution: GLP.Vector ) {
 
-		this.cameraComponent.near = 100;
+		this.cameraComponent.near = 90;
 		this.cameraComponent.far = 200;
 		this.cameraComponent.aspect = resolution.x / resolution.y;
-		this.cameraComponent.fov = this.baseFov + Math.max( 0, 1 / this.cameraComponent.aspect - 1 ) * 10.0;
+		this.cameraComponent.fov = this.baseFov + Math.max( 0, 1 / this.cameraComponent.aspect - 1 ) * 5.0;
 		this.cameraComponent.updateProjectionMatrix();
 
 	}
