@@ -11,3 +11,6 @@ report.json
 *.blend?
 
 /tmp
+
+#wsl
+*.Identifier

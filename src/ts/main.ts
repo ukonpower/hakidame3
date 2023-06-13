@@ -1,7 +1,7 @@
 import * as GLP from 'glpower';
 import { canvas } from './Globals';
 import { Scene } from "./Scene";
-import config from '../../config';
+import config from '../../config.json';
 
 class App {
 
